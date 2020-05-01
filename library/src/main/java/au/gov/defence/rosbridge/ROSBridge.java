@@ -52,8 +52,8 @@ public class ROSBridge {
     /**
      * A list of all the currently advertised topics
      **/
-    private List<Topic> mAdvertised;
-    private ROSTopicsViewModel mTopicsViewModel;
+//    private List<Topic> mAdvertised;
+//    private ROSTopicsViewModel mTopicsViewModel;
     private boolean mHeartbeatActive = true;
     private Thread mHeartBeat;
 
@@ -225,7 +225,7 @@ public class ROSBridge {
                             }
                         }
 
-                        mTopicsViewModel.setTopicsList(Topic.parseTopics(received));
+//                        mTopicsViewModel.setTopicsList(Topic.parseTopics(received));
                         Log.v(TAG, "Received topics back from server");
                         break;
                     }
