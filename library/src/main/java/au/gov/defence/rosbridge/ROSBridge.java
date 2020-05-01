@@ -13,15 +13,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import au.gov.defence.rosbridge.operation.RequestTopicsOperation;
 import au.gov.defence.rosbridge.viewmodel.ROSTopicsViewModel;
 import io.crossbar.autobahn.websocket.WebSocketConnection;
 import io.crossbar.autobahn.websocket.WebSocketConnectionHandler;
 import io.crossbar.autobahn.websocket.exceptions.WebSocketException;
 import io.crossbar.autobahn.websocket.types.ConnectionResponse;
 
-public class ROSBridge implements ViewModelStoreOwner {
+public class ROSBridge {
 
-    private ViewModelStore mViewModelStore;
+//    private ViewModelStore mViewModelStore;
 
     private static final String TAG = "au.gov.defence.rosbridge.ROSBridge";
     private static ROSBridge mROSBridge;
@@ -57,7 +58,7 @@ public class ROSBridge implements ViewModelStoreOwner {
     private Thread mHeartBeat;
 
     private ROSBridge() {
-        mViewModelStore = new ViewModelStore();
+//        mViewModelStore = new ViewModelStore();
         mHandledTopics = new HashMap<>();
 //        mROSBridgeTopics = new Vector<Topic>();
 //        mSubscriptions = new Vector<Topic>();
@@ -102,7 +103,7 @@ public class ROSBridge implements ViewModelStoreOwner {
             @Override
             public void run() {
                 while (mHeartbeatActive) {
-//                    updateTopicData();
+                    updateTopicData();
 //                    updatePhysiologicalData();
                     try {
                         Thread.sleep(2000);
@@ -114,18 +115,18 @@ public class ROSBridge implements ViewModelStoreOwner {
         });
     }
 
-//    private void updateTopicData() {
-//        if (mROSBridgeWebSocketConnection != null) {
-//            if (mROSBridgeWebSocketConnection.isConnected()) {
-//                RequestTopicsOperation message = new RequestTopicsOperation();
-//                try {
-//                    message.sendMessage();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
+    private void updateTopicData() {
+        if (mROSBridgeWebSocketConnection != null) {
+            if (mROSBridgeWebSocketConnection.isConnected()) {
+                RequestTopicsOperation message = new RequestTopicsOperation();
+                try {
+                    message.sendMessage();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
 //    private void updatePhysiologicalData() {
 //        Collection<Soldier> soldiers = DCASupport.getSoldiers();
@@ -165,11 +166,11 @@ public class ROSBridge implements ViewModelStoreOwner {
         return mROSBridge;
     }
 
-    @NonNull
-    @Override
-    public ViewModelStore getViewModelStore() {
-        return mViewModelStore;
-    }
+//    @NonNull
+//    @Override
+//    public ViewModelStore getViewModelStore() {
+//        return mViewModelStore;
+//    }
 
 
     public class WSConnectionHandler extends WebSocketConnectionHandler {
@@ -194,7 +195,7 @@ public class ROSBridge implements ViewModelStoreOwner {
 //            mJoySupport = new JoySupport();
 //            RemoteSensorView.setJoySupport(mJoySupport);
 //            mVIRBManager = new VIRBManager();
-//            mHeartBeat.start();
+            mHeartBeat.start();
         }
 
         @Override
@@ -213,6 +214,17 @@ public class ROSBridge implements ViewModelStoreOwner {
                 String op = received.getString("op");
                 switch (op) {
                     case "service_response": {
+                        List<Topic> topics = Topic.parseTopics(received);
+                        for(Topic t: topics)
+                        {
+                            String topicName = t.getName();
+                            if(!mHandledTopics.containsKey(topicName))
+                            {
+                                Log.v(TAG, "Found new topic: " + topicName);
+                                mHandledTopics.put(topicName,t);
+                            }
+                        }
+
                         mTopicsViewModel.setTopicsList(Topic.parseTopics(received));
                         Log.v(TAG, "Received topics back from server");
                         break;
