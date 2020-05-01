@@ -148,7 +148,7 @@ public class ROSBridge implements ViewModelStoreOwner {
         }
     }
 
-    private void connectROSBridge(String inURL) {
+    public void connectROSBridge(String inURL) {
         mROSBridgeWebSocketConnection = new WebSocketConnection();
         mROSBridgeWebSocketConnectionHandler = new WSConnectionHandler();
             try {
