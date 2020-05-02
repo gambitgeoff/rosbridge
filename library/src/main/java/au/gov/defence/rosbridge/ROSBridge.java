@@ -116,6 +116,7 @@ public class ROSBridge {
     }
 
     private void updateTopicData() {
+        Log.v(TAG, "Updating topic information");
         if (mROSBridgeWebSocketConnection != null) {
             if (mROSBridgeWebSocketConnection.isConnected()) {
                 RequestTopicsOperation message = new RequestTopicsOperation();
@@ -174,7 +175,7 @@ public class ROSBridge {
 
 
     public class WSConnectionHandler extends WebSocketConnectionHandler {
-        private static final String TAG = "au.gov.defence.rosbridge.ROSBridge.DSAConnectionHandler";
+        private static final String TAG = "au.gov.defence.rosbridge.ROSBridge.WSConnectionHandler";
 
         public WSConnectionHandler() {
             super();
