@@ -155,7 +155,7 @@ public class ROSBridge {
         mROSBridgeWebSocketConnectionHandler = new WSConnectionHandler();
             try {
             mROSBridgeWebSocketConnection.connect(inURL, mROSBridgeWebSocketConnectionHandler);
-            Log.v(TAG, "sent the connection request");
+            Log.v(TAG, "sent the connection request to: " + inURL);
         } catch (WebSocketException e) {
             e.printStackTrace();
         }
@@ -190,7 +190,7 @@ public class ROSBridge {
         @Override
         public void onOpen() {
             super.onOpen();
-            Log.v(TAG, "DCA ROS Bridge Connection Opened");
+            Log.v(TAG, "ROS Bridge Connection Opened");
             connectTopics();
 //            mHeartRateManager = new HeartRateManager();
 //            mJoySupport = new JoySupport();
