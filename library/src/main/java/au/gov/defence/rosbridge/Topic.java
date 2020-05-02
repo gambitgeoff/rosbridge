@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import au.gov.defence.rosbridge.msg.Message;
 import au.gov.defence.rosbridge.operation.AdvertiseOperation;
+import au.gov.defence.rosbridge.operation.Operation;
 import au.gov.defence.rosbridge.operation.PublishOperation;
 import au.gov.defence.rosbridge.operation.SubscribeOperation;
 
@@ -21,12 +22,14 @@ public class Topic {
     private boolean mIsAdvertised = false;
     private boolean mAdvertise = false;
     private ROSBridge mROSBridge;
+    private Vector<PublishOperation> mOperationBuffer;
 
     public Topic(String inTopicName, Message.MessageType inMessageType) {
         mTopicName = inTopicName;
         mMessageType = inMessageType;
         mROSBridge = ROSBridge.getROSBridge();
         mROSBridge.addTopic(this);
+        mOperationBuffer = new Vector<>();
     }
 
     @Override
@@ -77,6 +80,18 @@ public class Topic {
     {
         if(mAdvertise)
             this.advertise();
+        if(mOperationBuffer.size()>0)
+        {
+            Log.v(TAG,"Flushing topic buffers");
+            for(Operation o: mOperationBuffer)
+            {
+                try {
+                    o.sendMessage();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void advertise() {
@@ -105,6 +120,10 @@ public class Topic {
 
     public void publish(Message inMessage) {
         PublishOperation operation = new PublishOperation(this, inMessage);
+        if(!mROSBridge.getROSBridgeConnection().isConnected()) {
+            mOperationBuffer.add(operation);
+            return;
+        }
         try {
             operation.sendMessage();
         } catch (Exception e) {
