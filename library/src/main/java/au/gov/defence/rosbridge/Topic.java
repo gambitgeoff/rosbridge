@@ -19,8 +19,6 @@ public class Topic {
     private static final String TAG = "au.gov.defence.dca.ros";
     private String mTopicName;
     private Message.MessageType mMessageType;
-    private boolean mIsAdvertised = false;
-    private boolean mAdvertise = false;
     private ROSBridge mROSBridge;
     private Vector<Operation> mOperationBuffer;
 
@@ -78,8 +76,6 @@ public class Topic {
 
     public void handleConnected()
     {
-        if(mAdvertise)
-            this.advertise();
         if(mOperationBuffer.size()>0)
         {
             Log.v(TAG,"Flushing topic buffers");
@@ -95,18 +91,16 @@ public class Topic {
     }
 
     public void advertise() {
-        mAdvertise = true;
-        if (mROSBridge.getROSBridgeConnection().isConnected())
-        {
-            AdvertiseOperation message = new AdvertiseOperation(this);
+        AdvertiseOperation message = new AdvertiseOperation(this);
+        if (!mROSBridge.getROSBridgeConnection().isConnected()) {
+            mOperationBuffer.add(message);
+            return;
+        }
             try {
                 message.sendMessage();
-                mIsAdvertised = true;
-                mAdvertise = false;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
     }
 
     public void subscribe() {
