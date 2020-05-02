@@ -22,7 +22,7 @@ public class Topic {
     private boolean mIsAdvertised = false;
     private boolean mAdvertise = false;
     private ROSBridge mROSBridge;
-    private Vector<PublishOperation> mOperationBuffer;
+    private Vector<Operation> mOperationBuffer;
 
     public Topic(String inTopicName, Message.MessageType inMessageType) {
         mTopicName = inTopicName;
@@ -111,6 +111,11 @@ public class Topic {
 
     public void subscribe() {
         SubscribeOperation message = new SubscribeOperation(this);
+        if(!mROSBridge.getROSBridgeConnection().isConnected())
+        {
+            mOperationBuffer.add(message);
+            return;
+        }
         try {
             message.sendMessage();
         } catch (Exception e) {
