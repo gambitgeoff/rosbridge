@@ -232,6 +232,7 @@ public class ROSBridge {
                     }
                     case "publish": {
                         String topicName = received.getString("topic");
+                        Log.v(TAG,"Received publish update for topic: " + topicName);
                         Topic topic = mHandledTopics.get(topicName);
                         topic.handleUpdate(received);
 //                        boolean soldier_hr = topic.contains(HeartRateManager.TOPIC_HRM_HEARTRATE);

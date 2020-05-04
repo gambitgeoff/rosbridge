@@ -80,7 +80,7 @@ public class Topic extends TopicObservable {
      * @param inJSONObject
      */
     public void handleUpdate(JSONObject inJSONObject) {
-        Log.v(TAG, "handleUpdate for Topic: " + inJSONObject.toString());
+        Log.v(TAG, "handleUpdate for Topic: " + mTopicName + ", data: " + inJSONObject.toString());
         if(mMessage == null)
             mMessage = MessageFactory.createMessage(mMessageType);
         mMessage.updateMessage(inJSONObject);
