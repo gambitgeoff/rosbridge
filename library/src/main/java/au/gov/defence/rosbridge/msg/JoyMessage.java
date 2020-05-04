@@ -27,6 +27,8 @@ public class JoyMessage extends Message {
     private JSONArray mButtons;
     private int mSeq = 0;
 
+    public JoyMessage() { this(new Header());}
+
     public JoyMessage(Header inHeader) {
         super();
         mHeader = inHeader;
@@ -60,6 +62,20 @@ public class JoyMessage extends Message {
             msgJoyMessage.put("buttons", mButtons);
             return msgJoyMessage;
         } catch (JSONException jse) {
+            jse.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Message updateMessage(JSONObject inJSONObject) {
+        try {
+            mAxes = inJSONObject.getJSONArray("axes");
+            mButtons = inJSONObject.getJSONArray("buttons");
+            return this;
+        }
+        catch(JSONException jse)
+        {
             jse.printStackTrace();
         }
         return null;

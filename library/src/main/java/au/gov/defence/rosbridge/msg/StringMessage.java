@@ -17,9 +17,9 @@ public class StringMessage extends Message {
 
     private String mData;
 
-    public StringMessage(String inData) {
-        mData = inData;
-    }
+    public StringMessage() {this("");}
+
+    public StringMessage(String inData) { mData = inData; }
 
     public JSONObject getJSON() {
         JSONObject returnValue = new JSONObject();
@@ -29,5 +29,24 @@ public class StringMessage extends Message {
             e.printStackTrace();
         }
         return returnValue;
+    }
+
+    /**
+     * Received Message: {"topic": "/polar/hr", "msg": {"data": "95"}, "op": "publish"}
+     * @param inJSONObject
+     * @return
+     */
+    @Override
+    public Message updateMessage(JSONObject inJSONObject) {
+        try {
+            JSONObject msg = inJSONObject.getJSONObject("msg");
+            mData = msg.getString("data");
+            return this;
+        }
+        catch(JSONException jse)
+        {
+            jse.printStackTrace();
+        }
+        return null;
     }
 }

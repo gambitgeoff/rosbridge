@@ -50,4 +50,5 @@ public abstract class Message {
     }
 
     public abstract JSONObject getJSON();
+    public abstract Message updateMessage(JSONObject inJSONObject);
 }

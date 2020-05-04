@@ -34,6 +34,8 @@ public class Header extends Message {
     private long mStamp_sec, mStamp_nsec;
     private String mFrameId;
 
+    public Header() { this(0, 0,"dst_rosbridge"); }
+
     public Header(int inSec, int inNSec, String inFrameId) {
         super();
         mStamp_sec = inSec;
@@ -66,5 +68,10 @@ public class Header extends Message {
             jse.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Message updateMessage(JSONObject inJSONObject) {
+        return this;
     }
 }

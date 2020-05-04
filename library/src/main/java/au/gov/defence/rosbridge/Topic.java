@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Vector;
 
 import au.gov.defence.rosbridge.msg.Message;
+import au.gov.defence.rosbridge.msg.MessageFactory;
 import au.gov.defence.rosbridge.operation.AdvertiseOperation;
 import au.gov.defence.rosbridge.operation.Operation;
 import au.gov.defence.rosbridge.operation.PublishOperation;
@@ -23,6 +24,7 @@ public class Topic extends TopicObservable {
     private Message.MessageType mMessageType;
     private ROSBridge mROSBridge;
     private Vector<Operation> mOperationBuffer;
+    private Message mMessage;
 
     public Topic(String inTopicName, Message.MessageType inMessageType) {
         super();
@@ -55,6 +57,8 @@ public class Topic extends TopicObservable {
         return mTopicName;
     }
 
+    public Message getMessage() {return mMessage;}
+
     public static List<Topic> parseTopics(JSONObject inJSONTopics) {
         List<Topic> topicVec = new Vector<Topic>();
         Log.v(TAG, "Parsing topics");
@@ -71,9 +75,15 @@ public class Topic extends TopicObservable {
         return null;
     }
 
+    /**
+     * handle the update from the bridge. likely to update the message value i.e. from a publish.
+     * @param inJSONObject
+     */
     public void handleUpdate(JSONObject inJSONObject) {
-        //handle the update from the bridge. likely to update the message value.
         Log.v(TAG, "handleUpdate for Topic: " + inJSONObject.toString());
+        if(mMessage == null)
+            mMessage = MessageFactory.createMessage(mMessageType);
+        mMessage.updateMessage(inJSONObject);
         updateTopicObservers(this);
     }
 
@@ -119,6 +129,7 @@ public class Topic extends TopicObservable {
 
     public void publish(Message inMessage) {
         PublishOperation operation = new PublishOperation(this, inMessage);
+        mMessage = inMessage;
         if (!mROSBridge.getROSBridgeConnection().isConnected()) {
             mOperationBuffer.add(operation);
             return;
