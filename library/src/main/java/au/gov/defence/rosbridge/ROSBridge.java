@@ -106,7 +106,7 @@ public class ROSBridge {
                     updateTopicData();
 //                    updatePhysiologicalData();
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(10*1000); //update every 10s
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

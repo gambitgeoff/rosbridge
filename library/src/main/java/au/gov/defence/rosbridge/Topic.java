@@ -14,15 +14,18 @@ import au.gov.defence.rosbridge.operation.AdvertiseOperation;
 import au.gov.defence.rosbridge.operation.Operation;
 import au.gov.defence.rosbridge.operation.PublishOperation;
 import au.gov.defence.rosbridge.operation.SubscribeOperation;
+import au.gov.defence.rosbridge.viewmodel.TopicObservable;
+import au.gov.defence.rosbridge.viewmodel.TopicObserver;
 
-public class Topic {
-    private static final String TAG = "au.gov.defence.dca.ros";
+public class Topic extends TopicObservable {
+    private static final String TAG = "au.gov.defence.rosbridge.Topic";
     private String mTopicName;
     private Message.MessageType mMessageType;
     private ROSBridge mROSBridge;
     private Vector<Operation> mOperationBuffer;
 
     public Topic(String inTopicName, Message.MessageType inMessageType) {
+        super();
         mTopicName = inTopicName;
         mMessageType = inMessageType;
         mROSBridge = ROSBridge.getROSBridge();
@@ -68,19 +71,16 @@ public class Topic {
         return null;
     }
 
-    public void handleUpdate(JSONObject inJSONObject)
-    {
+    public void handleUpdate(JSONObject inJSONObject) {
         //handle the update from the bridge. likely to update the message value.
         Log.v(TAG, "handleUpdate for Topic: " + inJSONObject.toString());
+        updateTopicObservers(this);
     }
 
-    public void handleConnected()
-    {
-        if(mOperationBuffer.size()>0)
-        {
-            Log.v(TAG,"Flushing topic buffers");
-            for(Operation o: mOperationBuffer)
-            {
+    public void handleConnected() {
+        if (mOperationBuffer.size() > 0) {
+            Log.v(TAG, "Flushing topic buffers");
+            for (Operation o : mOperationBuffer) {
                 try {
                     o.sendMessage();
                 } catch (Exception e) {
@@ -96,20 +96,6 @@ public class Topic {
             mOperationBuffer.add(message);
             return;
         }
-            try {
-                message.sendMessage();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-    }
-
-    public void subscribe() {
-        SubscribeOperation message = new SubscribeOperation(this);
-        if(!mROSBridge.getROSBridgeConnection().isConnected())
-        {
-            mOperationBuffer.add(message);
-            return;
-        }
         try {
             message.sendMessage();
         } catch (Exception e) {
@@ -117,9 +103,23 @@ public class Topic {
         }
     }
 
+    public void subscribe(TopicObserver inTopicObserver) {
+        SubscribeOperation message = new SubscribeOperation(this);
+        if (!mROSBridge.getROSBridgeConnection().isConnected()) {
+            mOperationBuffer.add(message);
+            return;
+        }
+        try {
+            message.sendMessage();
+            addTopicObserver(inTopicObserver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void publish(Message inMessage) {
         PublishOperation operation = new PublishOperation(this, inMessage);
-        if(!mROSBridge.getROSBridgeConnection().isConnected()) {
+        if (!mROSBridge.getROSBridgeConnection().isConnected()) {
             mOperationBuffer.add(operation);
             return;
         }
