@@ -21,6 +21,8 @@ public class StringMessage extends Message {
 
     public StringMessage(String inData) { mData = inData; }
 
+    public String getData() { return mData; }
+
     public JSONObject getJSON() {
         JSONObject returnValue = new JSONObject();
         try {
