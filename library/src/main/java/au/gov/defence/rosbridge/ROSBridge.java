@@ -1,11 +1,6 @@
 package au.gov.defence.rosbridge;
 
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelStore;
-import androidx.lifecycle.ViewModelStoreOwner;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import au.gov.defence.rosbridge.operation.RequestTopicsOperation;
-import au.gov.defence.rosbridge.viewmodel.ROSTopicsViewModel;
 import io.crossbar.autobahn.websocket.WebSocketConnection;
 import io.crossbar.autobahn.websocket.WebSocketConnectionHandler;
 import io.crossbar.autobahn.websocket.exceptions.WebSocketException;
@@ -22,65 +16,18 @@ import io.crossbar.autobahn.websocket.types.ConnectionResponse;
 
 public class ROSBridge {
 
-//    private ViewModelStore mViewModelStore;
-
     private static final String TAG = "au.gov.defence.rosbridge.ROSBridge";
     private static ROSBridge mROSBridge;
     private WebSocketConnection mROSBridgeWebSocketConnection;
     private WebSocketConnectionHandler mROSBridgeWebSocketConnectionHandler;
     private Map<String, Topic> mHandledTopics;
 
-//    private HeartRateManager mHeartRateManager;
-//    private JoySupport mJoySupport;
-//    private VIRBManager mVIRBManager;
-
-    /**
-     * A list of all the currently seen topics on the ROS MASTER
-     **/
-//    private List<Topic> mROSBridgeTopics;
-
-    /**
-     * A list containing all of the current subscriptions
-     **/
-//    private List<Topic> mSubscriptions;
-
-    /**
-     * A list containing all of the currrent publications
-     **/
-//    private List<Topic> mPublications;
-
-    /**
-     * A list of all the currently advertised topics
-     **/
-//    private List<Topic> mAdvertised;
-//    private ROSTopicsViewModel mTopicsViewModel;
     private boolean mHeartbeatActive = true;
     private Thread mHeartBeat;
 
     private ROSBridge() {
-//        mViewModelStore = new ViewModelStore();
         mHandledTopics = new HashMap<>();
-//        mROSBridgeTopics = new Vector<Topic>();
-//        mSubscriptions = new Vector<Topic>();
         Log.v(TAG, "Created the view model store");
-//        mTopicsViewModel = new ViewModelProvider(this).get(ROSTopicsViewModel.class);
-//        mTopicsViewModel.getTopicsList().observeForever(new Observer<List<Topic>>() {
-//            @Override
-//            public void onChanged(List<Topic> inTopics) {
-//                    Log.v(TAG, "Updated Topics:");
-//                for (Topic t : inTopics) {
-//                        if (!mROSBridgeTopics.contains(t))
-//                            mROSBridgeTopics.add(t);
-//                    if (t.getName().contains("soldier")) {
-//                        Log.v(TAG, "found soldier: " + t.getName() + ", Type: " + t.getMessageType());
-//                            if (!mSubscriptions.contains(t)) {
-//                                t.subscribe();
-//                                mSubscriptions.add(t);
-//                            }
-//                        }
-//                    }
-//            }
-//        });
         setupHeartbeat();
     }
 
@@ -104,7 +51,6 @@ public class ROSBridge {
             public void run() {
                 while (mHeartbeatActive) {
                     updateTopicData();
-//                    updatePhysiologicalData();
                     try {
                         Thread.sleep(10*1000); //update every 10s
                     } catch (InterruptedException e) {
@@ -128,13 +74,6 @@ public class ROSBridge {
             }
         }
     }
-
-//    private void updatePhysiologicalData() {
-//        Collection<Soldier> soldiers = DCASupport.getSoldiers();
-//        List<Soldier> newList = new Vector<Soldier>(soldiers);
-//        mTeamHeartRatesViewModel.setSoldiers(newList);
-//        Log.v(TAG, "Posting update for all soldiers physiological data.");
-//    }
 
     /**
      * Called when the rosbridge connection is established. It will run through topics which
@@ -167,13 +106,6 @@ public class ROSBridge {
         return mROSBridge;
     }
 
-//    @NonNull
-//    @Override
-//    public ViewModelStore getViewModelStore() {
-//        return mViewModelStore;
-//    }
-
-
     public class WSConnectionHandler extends WebSocketConnectionHandler {
         private static final String TAG = "au.gov.defence.rosbridge.ROSBridge.WSConnectionHandler";
 
@@ -192,11 +124,7 @@ public class ROSBridge {
             super.onOpen();
             Log.v(TAG, "ROS Bridge Connection Opened");
             connectTopics();
-//            mHeartRateManager = new HeartRateManager();
-//            mJoySupport = new JoySupport();
-//            RemoteSensorView.setJoySupport(mJoySupport);
-//            mVIRBManager = new VIRBManager();
-            mHeartBeat.start();
+//            mHeartBeat.start();
         }
 
         @Override
@@ -225,8 +153,6 @@ public class ROSBridge {
                                 mHandledTopics.put(topicName,t);
                             }
                         }
-
-//                        mTopicsViewModel.setTopicsList(Topic.parseTopics(received));
                         Log.v(TAG, "Received topics back from server");
                         break;
                     }
@@ -235,16 +161,8 @@ public class ROSBridge {
                         Log.v(TAG,"Received publish update for topic: " + topicName);
                         Topic topic = mHandledTopics.get(topicName);
                         topic.handleUpdate(received);
-//                        boolean soldier_hr = topic.contains(HeartRateManager.TOPIC_HRM_HEARTRATE);
-//                        if (soldier_hr) {
-//                            String soldierName = topic.substring(9, topic.indexOf("/", 9));
-//                            JSONObject msg = received.getJSONObject("msg");
-//                            int heartRate = msg.getInt("data");
-//                            Soldier s = DCASupport.getSoldier(soldierName);
-//                            s.setHeartRate(heartRate);
                         }
                     }
-//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
