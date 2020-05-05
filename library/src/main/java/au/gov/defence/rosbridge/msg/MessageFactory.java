@@ -10,10 +10,12 @@ public class MessageFactory {
             case STRING:
             {
                 returnValue = new StringMessage();
+                return returnValue;
             }
             case JOY:
             {
                 returnValue = new JoyMessage();
+                return returnValue;
             }
         }
         return returnValue;
