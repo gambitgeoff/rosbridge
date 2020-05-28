@@ -137,6 +137,8 @@ public class JoyMessage extends Message {
             double val2 = Double.parseDouble(mAxes.getString(1));
             if (val1 > 0.1 || val2 >0.1)
                 returnValue = true;
+            else if (val1 < -0.1 || val2 < -0.1)
+                return true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
