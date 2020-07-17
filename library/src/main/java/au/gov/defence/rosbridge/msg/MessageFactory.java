@@ -17,6 +17,16 @@ public class MessageFactory {
                 returnValue = new JoyMessage();
                 return returnValue;
             }
+            case IMAGE_COMPRESSED:
+            {
+               returnValue = new CompressedImageMessage();
+               return returnValue;
+            }
+            case GEOMETRY_TWIST:
+            {
+                returnValue = new GeometryTwistMessage();
+                return returnValue;
+            }
         }
         return returnValue;
     }
