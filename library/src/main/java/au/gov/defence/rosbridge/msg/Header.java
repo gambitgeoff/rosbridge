@@ -43,6 +43,19 @@ public class Header extends Message {
         mFrameId = inFrameId;
     }
 
+    // to create object from recieved JSON object, used in CompressedImageMessage
+    public Header(JSONObject json){
+        // uses the 'header' jsonObject, not the whole message
+        try {
+            mSeq = json.getInt("seq");
+            mStamp_sec = json.getJSONObject("stamp").getLong("secs");
+            mStamp_nsec = json.getJSONObject("stamp").getLong("nsecs");
+            mFrameId = json.getString("frame_id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setNSec(int inNSec) {
         mStamp_nsec = inNSec;
     }
@@ -50,6 +63,8 @@ public class Header extends Message {
     public void setSec(int inSec) {
         mStamp_sec = inSec;
     }
+
+    public void setSeq(int seq){ this.mSeq = seq; }
 
     @Override
     public JSONObject getJSON() {
