@@ -26,6 +26,21 @@ public class DiagnosticStatusMessage extends Message {
     String hardware_id;  // hardware unique string
     LinkedList<KeyValueMessage> values;  // array of values associated with status
 
+    public int getOkEnum() { return ok; }
+    public int getWarnEnum() { return warn; }
+    public int getErrorEnum() { return error; }
+    public int getStaleEnum() { return stale; }
+
+    public int getLevel() { return level; }
+
+    public String getName() { return name; }
+
+    public String getMessage() { return message; }
+
+    public String getHardware_id() { return hardware_id; }
+
+    public LinkedList<KeyValueMessage> getKeyValueMessages(){ return values; }
+
     @Override
     public JSONObject getJSON() {
         JSONObject toReturn = new JSONObject();
