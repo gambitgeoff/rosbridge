@@ -18,7 +18,7 @@ public class DiagnosticStatusMessage extends Message {
 
     private static final String TAG = "au.gov.defence.dsa.ros.msg.DiagnosticStatusMessage";
 
-    private int ok, warn, error, stale; // possible levels of operation
+    private int ok = 0, warn = 1, error = 2, stale = 3; // possible levels of operation
 
     private int level;  // level of operation, compare with above enumerations
     String name;  // description of test/component reporting
@@ -45,6 +45,7 @@ public class DiagnosticStatusMessage extends Message {
     public JSONObject getJSON() {
         JSONObject toReturn = new JSONObject();
         try {
+            // created message used rostopic pub and it appears to not have these values
             toReturn.put("OK", this.ok);
             toReturn.put("WARN", this.warn);
             toReturn.put("ERROR", this.error);
@@ -86,10 +87,11 @@ public class DiagnosticStatusMessage extends Message {
         // often used when messages are embedded
         try {
             // constants -- possible levels of operations
-            this.ok = inJSONObject.getInt("OK");
-            this.warn = inJSONObject.getInt("WARN");
-            this.error = inJSONObject.getInt("ERROR");
-            this.stale = inJSONObject.getInt("STALE");
+            // created message used rostopic pub and it appears to not have these values
+            //this.ok = inJSONObject.getInt("OK");
+            //this.warn = inJSONObject.getInt("WARN");
+            //this.error = inJSONObject.getInt("ERROR");
+            //this.stale = inJSONObject.getInt("STALE");
 
             // compare this.level with the constants above
             this.level = inJSONObject.getInt("level");
