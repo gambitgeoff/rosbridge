@@ -27,6 +27,21 @@ public class MessageFactory {
                 returnValue = new GeometryTwistMessage();
                 return returnValue;
             }
+            case DIAGNOSTIC_ARRAY:
+            {
+                returnValue = new DiagnosticArrayMessage();
+                return returnValue;
+            }
+            case DIAGNOSTIC_STATUS:
+            {
+                returnValue = new DiagnosticStatusMessage();
+                return returnValue;
+            }
+            case KEY_VALUE:
+            {
+                returnValue = new KeyValueMessage();
+                return returnValue;
+            }
         }
         return returnValue;
     }
