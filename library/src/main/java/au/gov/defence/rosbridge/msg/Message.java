@@ -14,7 +14,12 @@ public abstract class Message {
     public static final String ROS_MESSAGE_GEOMETRY_TWIST = "geometry_msgs/Twist";
     public static final String ROS_MESSAGE_IMAGE_COMPRESSED = "sensor_msgs/CompressedImage";
 
-    public enum MessageType {STRING, JOY, LOG, INT32, RB_CONNECTEDCLIENTS, HEADER, GEOMETRY_TWIST, IMAGE_COMPRESSED, REQUEST_TOPICS};
+    public static final String ROS_MESSAGE_DIAGNOSTIC_ARRAY = "diagnostic_msgs/DiagnosticArray";
+    public static final String ROS_MESSAGE_DIAGNOSTIC_STATUS = "diagnostic_msgs/DiagnosticStatus";
+    public static final String ROS_MESSAGE_KEY_VALUE = "diagnostic_msgs/KeyValue";
+
+    public enum MessageType {STRING, JOY, LOG, INT32, RB_CONNECTEDCLIENTS, HEADER, GEOMETRY_TWIST,
+        IMAGE_COMPRESSED, DIAGNOSTIC_ARRAY, DIAGNOSTIC_STATUS, KEY_VALUE, REQUEST_TOPICS};
 
     public static String getMessageTypeJSON(MessageType inMessageType) {
         switch (inMessageType) {
@@ -34,6 +39,12 @@ public abstract class Message {
                 return ROS_MESSAGE_GEOMETRY_TWIST;
             case IMAGE_COMPRESSED:
                 return ROS_MESSAGE_IMAGE_COMPRESSED;
+            case DIAGNOSTIC_ARRAY:
+                return ROS_MESSAGE_DIAGNOSTIC_ARRAY;
+            case DIAGNOSTIC_STATUS:
+                return ROS_MESSAGE_DIAGNOSTIC_STATUS;
+            case KEY_VALUE:
+                return ROS_MESSAGE_KEY_VALUE;
         }
         return null;
     }
@@ -56,6 +67,12 @@ public abstract class Message {
                 return MessageType.GEOMETRY_TWIST;
             case ROS_MESSAGE_IMAGE_COMPRESSED:
                 return MessageType.IMAGE_COMPRESSED;
+            case ROS_MESSAGE_DIAGNOSTIC_ARRAY:
+                return MessageType.DIAGNOSTIC_ARRAY;
+            case ROS_MESSAGE_DIAGNOSTIC_STATUS:
+                return MessageType.DIAGNOSTIC_STATUS;
+            case ROS_MESSAGE_KEY_VALUE:
+                return MessageType.KEY_VALUE;
         }
         return null;
     }
