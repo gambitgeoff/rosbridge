@@ -20,6 +20,14 @@ public class DiagnosticArrayMessage extends Message {
     Header header;  // for timestamp
     LinkedList<DiagnosticStatusMessage> status;  // an array of components being reported on
 
+    public Header getHeader() {
+        return header;
+    }
+
+    public LinkedList<DiagnosticStatusMessage> getStatus() {
+        return status;
+    }
+
     @Override
     public JSONObject getJSON() {
         JSONObject body = new JSONObject();

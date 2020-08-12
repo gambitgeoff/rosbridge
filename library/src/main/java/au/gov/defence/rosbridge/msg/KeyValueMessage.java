@@ -17,6 +17,10 @@ public class KeyValueMessage extends Message {
     String key;
     String value;
 
+    public String getKey() { return key; }
+
+    public String getValue() { return value; }
+
     @Override
     public JSONObject getJSON() {
         JSONObject toReturn = new JSONObject();
