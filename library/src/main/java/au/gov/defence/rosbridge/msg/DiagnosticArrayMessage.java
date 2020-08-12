@@ -33,8 +33,9 @@ public class DiagnosticArrayMessage extends Message {
             body.put("status", status);
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.println(Log.ERROR, TAG, e.getMessage());
         }
-        
+
         return body;
     }
 
@@ -71,6 +72,7 @@ public class DiagnosticArrayMessage extends Message {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.println(Log.ERROR, TAG, e.getMessage());
         }
         return this;
     }
