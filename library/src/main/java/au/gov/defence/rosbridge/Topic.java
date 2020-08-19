@@ -15,6 +15,7 @@ import au.gov.defence.rosbridge.operation.AdvertiseOperation;
 import au.gov.defence.rosbridge.operation.Operation;
 import au.gov.defence.rosbridge.operation.PublishOperation;
 import au.gov.defence.rosbridge.operation.SubscribeOperation;
+import au.gov.defence.rosbridge.operation.UnSubscribeOperation;
 import au.gov.defence.rosbridge.viewmodel.TopicObservable;
 import au.gov.defence.rosbridge.viewmodel.TopicObserver;
 
@@ -123,6 +124,21 @@ public class Topic extends TopicObservable {
         try {
             message.sendMessage();
             addTopicObserver(inTopicObserver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void unsubscribe(TopicObserver inTopicObserver) {
+        UnSubscribeOperation message = new UnSubscribeOperation(this);
+        if (!mROSBridge.getROSBridgeConnection().isConnected()){
+            mOperationBuffer.add(message);
+            removeTopicObserver(inTopicObserver);
+            return;
+        }
+        try {
+            message.sendMessage();
+            removeTopicObserver(inTopicObserver);
         } catch (Exception e) {
             e.printStackTrace();
         }
