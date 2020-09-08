@@ -42,6 +42,16 @@ public class MessageFactory {
                 returnValue = new KeyValueMessage();
                 return returnValue;
             }
+            case CONNECTED_CLIENTS:
+            {
+                returnValue = new ConnectedClients();
+                return returnValue;
+            }
+            case CONNECTED_CLIENT:
+            {
+                returnValue = new ConnectedClient();
+                return returnValue;
+            }
         }
         return returnValue;
     }
