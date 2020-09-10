@@ -15,7 +15,7 @@ import org.json.JSONObject;
  */
 public class StringMessage extends Message {
 
-    private String mData;
+    protected String mData;
 
     public StringMessage() {this("");}
 
