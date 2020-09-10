@@ -52,6 +52,11 @@ public class MessageFactory {
                 returnValue = new ConnectedClient();
                 return returnValue;
             }
+            case INT32:
+            {
+                returnValue = new Int32Message();
+                return returnValue;
+            }
         }
         return returnValue;
     }
