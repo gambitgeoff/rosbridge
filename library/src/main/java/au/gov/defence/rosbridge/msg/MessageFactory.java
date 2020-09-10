@@ -44,12 +44,12 @@ public class MessageFactory {
             }
             case CONNECTED_CLIENTS:
             {
-                returnValue = new ConnectedClients();
+                returnValue = new ConnectedClientsMessage();
                 return returnValue;
             }
             case CONNECTED_CLIENT:
             {
-                returnValue = new ConnectedClient();
+                returnValue = new ConnectedClientMessage();
                 return returnValue;
             }
             case INT32:

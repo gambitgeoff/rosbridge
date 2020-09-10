@@ -16,20 +16,20 @@ import java.util.LinkedList;
  * clients: []
  */
 
-public class ConnectedClients extends Message{
+public class ConnectedClientsMessage extends Message{
 
     private static final String TAG = "au.gov.defence.dsa.ros.msg.ConnectedClients";
 
-    LinkedList<ConnectedClient> clients;  // an array of clients connected to ROSBridge
+    LinkedList<ConnectedClientMessage> clients;  // an array of clients connected to ROSBridge
 
-    public LinkedList<ConnectedClient> getClients(){ return this.clients; }
+    public LinkedList<ConnectedClientMessage> getClients(){ return this.clients; }
 
     @Override
     public JSONObject getJSON() {
         JSONObject body = new JSONObject();
         JSONArray clients = new JSONArray();
 
-        for (ConnectedClient c : this.clients){
+        for (ConnectedClientMessage c : this.clients){
             clients.put(c.getJSON());
         }
         try {
@@ -48,7 +48,7 @@ public class ConnectedClients extends Message{
             inJSONObject = inJSONObject.getJSONObject("msg");
             JSONArray array = inJSONObject.getJSONArray("clients");
             for (int i = 0; i < array.length(); i++){
-                ConnectedClient client = new ConnectedClient();
+                ConnectedClientMessage client = new ConnectedClientMessage();
                 client.updateMessage(array.getJSONObject(i));
                 this.clients.add(client);
             }

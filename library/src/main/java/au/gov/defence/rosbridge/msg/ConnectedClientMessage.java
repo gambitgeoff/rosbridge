@@ -16,7 +16,7 @@ import org.json.JSONObject;
  *  nsecs:
  */
 
-public class ConnectedClient extends Message {
+public class ConnectedClientMessage extends Message {
 
     private static final String TAG = "au.gov.defence.dsa.ros.msg.ConnectedClient";
 
@@ -26,6 +26,9 @@ public class ConnectedClient extends Message {
 
     public String getIp_address(){ return this.ip_address; }
     public JSONObject getConnection_time(){ return this.connection_time; }
+
+    public void setIp_address(String ip_address){ this.ip_address = ip_address; }
+    public void setConnection_time( JSONObject connection_time){ this.connection_time = connection_time; }
 
     @Override
     public JSONObject getJSON() {
@@ -43,6 +46,9 @@ public class ConnectedClient extends Message {
     @Override
     public Message updateMessage(JSONObject inJSONObject) {
         try {
+            if (inJSONObject.has("msg")){
+                inJSONObject = inJSONObject.getJSONObject("msg");
+            }
             this.ip_address = inJSONObject.getString("ip_address");
             this.connection_time = inJSONObject.getJSONObject("connection_time");
         } catch (JSONException e) {
