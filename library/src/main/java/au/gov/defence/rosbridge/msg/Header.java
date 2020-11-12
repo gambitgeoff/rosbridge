@@ -69,11 +69,12 @@ public class Header extends Message {
     @Override
     public JSONObject getJSON() {
         try {
-            mStamp_sec = System.currentTimeMillis() / 1000;
+            //mStamp_sec = System.currentTimeMillis() / 1000;
             JSONObject stamp = new JSONObject();
             JSONObject header = new JSONObject();
-            stamp.put("secs", mStamp_sec);
-            stamp.put("nsecs", mStamp_nsec);
+            // if secs and nsecs are not set, ROSbridge auto-generates them.
+            //stamp.put("secs", mStamp_sec);
+            //stamp.put("nsecs", mStamp_nsec);
             header.put("stamp", stamp);
             header.put("seq", mSeq);
             header.put("frame_id", mFrameId);
