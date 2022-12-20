@@ -57,6 +57,11 @@ public class MessageFactory {
                 returnValue = new Int32Message();
                 return returnValue;
             }
+            case CUSTOM_MESSAGE:
+            {
+                returnValue = new CustomMessage();
+                return returnValue;
+            }
         }
         return returnValue;
     }
