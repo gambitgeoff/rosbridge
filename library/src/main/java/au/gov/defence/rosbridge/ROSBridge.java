@@ -23,7 +23,7 @@ public class ROSBridge {
     private Map<String, Topic> mHandledTopics;
 
     private boolean mHeartbeatActive = true;
-    private Thread mHeartBeat;
+    public Thread mHeartBeat;           //temp - changed from private 
 
     private ROSBridge() {
         mHandledTopics = new HashMap<>();
