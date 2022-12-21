@@ -23,7 +23,7 @@ public abstract class Message {
 
     public enum MessageType {STRING, JOY, LOG, INT32, RB_CONNECTEDCLIENTS, HEADER, GEOMETRY_TWIST,
         IMAGE_COMPRESSED, DIAGNOSTIC_ARRAY, DIAGNOSTIC_STATUS, KEY_VALUE, REQUEST_TOPICS,
-        CONNECTED_CLIENTS, CONNECTED_CLIENT, CUSTOM_MESSAGE};
+        CONNECTED_CLIENTS, CONNECTED_CLIENT};
 
     public static String getMessageTypeJSON(MessageType inMessageType) {
         switch (inMessageType) {
