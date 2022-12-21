@@ -1,4 +1,4 @@
-package au.gov.defence.rosbridge.msg;
+package au.gov.defence.rosbridge.msg
 
 import org.json.JSONObject;
 
