@@ -20,8 +20,6 @@ public abstract class Message {
 
     //public static final String ROS_MESSAGE_CONNECTED_CLIENTS = "rosbridge_msgs/ConnectedClients";
     public static final String ROS_MESSAGE_ROSBRIDGE_CONNECTED_CLIENT = "rosbridge_msgs/ConnectedClient";
-    
-    public static final String ROS_MESSAGE_CUSTOM = "ros_msgs/custom";
 
     public enum MessageType {STRING, JOY, LOG, INT32, RB_CONNECTEDCLIENTS, HEADER, GEOMETRY_TWIST,
         IMAGE_COMPRESSED, DIAGNOSTIC_ARRAY, DIAGNOSTIC_STATUS, KEY_VALUE, REQUEST_TOPICS,
@@ -53,9 +51,6 @@ public abstract class Message {
                 return ROS_MESSAGE_KEY_VALUE;
             case CONNECTED_CLIENT:
                 return ROS_MESSAGE_ROSBRIDGE_CONNECTED_CLIENT;
-            case CUSTOM_MESSAGE:
-                return ROS_MESSAGE_CUSTOM;
-            
         }
         return null;
     }
@@ -86,8 +81,6 @@ public abstract class Message {
                 return MessageType.KEY_VALUE;
             case ROS_MESSAGE_ROSBRIDGE_CONNECTED_CLIENT:
                 return MessageType.CONNECTED_CLIENT;
-            case ROS_MESSAGE_CUSTOM:
-                return MessageType.CUSTOM_MESSAGE;
         }
         return null;
     }
